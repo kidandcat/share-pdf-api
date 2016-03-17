@@ -1,0 +1,19 @@
+{
+  "name": "api-pdf",
+  "version": "0.0.5",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "body-parser": "~1.13.2",
+    "connect-multiparty": "^2.0.0",
+    "cookie-parser": "~1.3.5",
+    "crypto": "0.0.3",
+    "debug": "~2.2.0",
+    "express": "~4.13.1",
+    "morgan": "~1.6.1",
+    "serve-favicon": "~2.3.0",
+    "socket.io": "^1.4.5"
+  }
+}

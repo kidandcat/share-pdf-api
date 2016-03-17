@@ -1,0 +1,27 @@
+doctype
+html
+    head
+      title PDF test
+      style.
+        * { margin:0; padding:0; } 
+
+        html, body { width:100%; height:100%; } 
+        body{
+            display: flex;
+        }
+        canvas{
+            flex: 1;
+        }
+
+    body
+      button#prev Previous
+      button#next Next
+      canvas#the-canvas(style='border:1px solid black')
+      
+      script(src='/pdf.js')
+      script var url = '/pdf/#{ pdf }';
+      script(src='/pdf-control.js')
+      script(src='/pdf-sync-master.js')
+      script.
+        document.getElementById('prev').addEventListener('click', pPage);
+        document.getElementById('next').addEventListener('click', nPage);

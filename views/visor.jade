@@ -1,0 +1,23 @@
+doctype
+html
+    head
+      title PDF test
+      style.
+        * { margin:0; padding:0; } 
+
+        html, body { width:100%; height:100%; } 
+        body{
+            display: flex;
+        }
+        canvas{
+            flex: 1;
+        }
+
+    body
+
+      canvas#the-canvas(style='border:1px solid black')
+      
+      script(src='/pdf.js')
+      script var url = '/pdf/#{ pdf }';
+      script(src='/pdf-control.js')
+      script(src='/pdf-sync.js')
