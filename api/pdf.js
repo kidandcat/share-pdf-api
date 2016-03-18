@@ -67,12 +67,25 @@ router.get('/pdf/import/:path/:url/:user/:pass', function(req, res, next) {
     if (!fs.existsSync('pdfs/' + req.params.path)) {
         fs.mkdirSync('pdfs/' + req.params.path);
     }
-    if (!user && !pass) {
-        request.get(url).pipe(fs.createWriteStream('pdfs/' + req.params.path + '/' + encodeURIComponent(filename)));
+        request.get(url).auth(user, pass, false).pipe(fs.createWriteStream('pdfs/' + req.params.path + '/' + encodeURIComponent(filename)));
         passwords[req.params.path + encodeURIComponent(nam)] = password;
         res.send({ status: 'ok', path: 'pdf/' + req.params.path + '/' + encodeURIComponent(filename), password: password });
-    } else {
-        request.get(url).auth(user, pass, false).pipe(fs.createWriteStream('pdfs/' + req.params.path + '/' + encodeURIComponent(filename)));
+});
+
+router.get('/pdf/import/:path/:url/', function(req, res, next) {
+    console.log('sala1');
+    var url = req.params.url;
+    var user = req.params.user;
+    var pass = req.params.pass;
+    var name = url.split('/');
+    var password = makepassword();
+    var filename = name[name.length - 1];
+
+    if (!fs.existsSync('pdfs/' + req.params.path)) {
+        fs.mkdirSync('pdfs/' + req.params.path);
+    }
+    if (!user && !pass) {
+        request.get(url).pipe(fs.createWriteStream('pdfs/' + req.params.path + '/' + encodeURIComponent(filename)));
         passwords[req.params.path + encodeURIComponent(nam)] = password;
         res.send({ status: 'ok', path: 'pdf/' + req.params.path + '/' + encodeURIComponent(filename), password: password });
     }
