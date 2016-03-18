@@ -93,23 +93,20 @@ router.get('/pdf/import/:path/:url/', function(req, res, next) {
 
 router.post('/pdf/:path', multipartMiddleware, function(req, res, next) {
     fs.readFile(req.files.file.path, function(err, data) {
-        var nam = req.files.file.name.split('.');
-        nam.pop();
-        nam = nam.join('.');
         var password = makepassword();
         if (!fs.existsSync('pdfs/' + req.params.path)) {
             fs.mkdirSync('pdfs/' + req.params.path);
         }
         fs.writeFile('pdfs/' + req.params.path + '/' + encodeURIComponent(req.files.file.name), data, function(err) {
-            passwords[req.params.path + encodeURIComponent(nam)] = password;
-            res.send({ status: 'ok', path: 'pdf/' + req.params.path + '/' + encodeURIComponent(nam), password: password });
+            passwords[req.params.path + encodeURIComponent(req.files.file.name)] = password;
+            res.send({ status: 'ok', path: 'pdf/' + req.params.path + '/' + encodeURIComponent(req.files.file.name), password: password });
         });
     });
 });
 
 router.delete('/pdf/:path/:id', function(req, res, next) {
     if (req.params.password == passwords[req.params.path + encodeURIComponent(req.params.id)]) {
-        deleteFile('pdfs/' + req.params.path + '/' + req.params.id + '.pdf', function(result) {
+        deleteFile('pdfs/' + req.params.path + '/' + req.params.id, function(result) {
             res.send(result);
         });
     } else {
@@ -134,7 +131,7 @@ router.get('/list/pdf/:path', function(req, res, next) {
 
 router.get('/pdf/:path/:id', function(req, res, next) {
     res.contentType("application/pdf");
-    fs.createReadStream('pdfs/' + req.params.path + '/' + encodeURIComponent(req.params.id) + '.pdf').pipe(res);
+    fs.createReadStream('pdfs/' + req.params.path + '/' + encodeURIComponent(req.params.id)).pipe(res);
 });
 
 router.get('/view/pdf/:path/:id/', function(req, res, next) {
