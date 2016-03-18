@@ -68,7 +68,7 @@ router.get('/pdf/import/:path/:url/:user/:pass', function(req, res, next) {
         fs.mkdirSync('pdfs/' + req.params.path);
     }
         request.get(url).auth(user, pass, false).pipe(fs.createWriteStream('pdfs/' + req.params.path + '/' + encodeURIComponent(filename)));
-        passwords[req.params.path + encodeURIComponent(nam)] = password;
+        passwords[req.params.path + encodeURIComponent(filename)] = password;
         res.send({ status: 'ok', path: 'pdf/' + req.params.path + '/' + encodeURIComponent(filename), password: password });
 });
 
@@ -86,7 +86,7 @@ router.get('/pdf/import/:path/:url/', function(req, res, next) {
     }
     if (!user && !pass) {
         request.get(url).pipe(fs.createWriteStream('pdfs/' + req.params.path + '/' + encodeURIComponent(filename)));
-        passwords[req.params.path + encodeURIComponent(nam)] = password;
+        passwords[req.params.path + encodeURIComponent(filename)] = password;
         res.send({ status: 'ok', path: 'pdf/' + req.params.path + '/' + encodeURIComponent(filename), password: password });
     }
 });
