@@ -32,7 +32,7 @@ router.get('/pdf/vdrive/list/:user/:pass', function(req, res, next) {
 });
 
 //url, user, pass
-router.post('/pdf/vdrive/import/:path', function(req, res, next) {
+router.post('/pdf/import/:path', function(req, res, next) {
     console.log('sala1');
     var url = req.body.url;
     var user = req.body.user;
@@ -43,7 +43,11 @@ router.post('/pdf/vdrive/import/:path', function(req, res, next) {
     if (!fs.existsSync('pdfs/' + req.params.path)) {
         fs.mkdirSync('pdfs/' + req.params.path);
     }
-    request.get(url).auth(user, pass, false).pipe(fs.createWriteStream('pdfs/' + req.params.path + '/' + encodeURIComponent(filename)));
+    if(!user && !pass){
+        request.get(url).pipe(fs.createWriteStream('pdfs/' + req.params.path + '/' + encodeURIComponent(filename)));
+    }else{
+        request.get(url).auth(user, pass, false).pipe(fs.createWriteStream('pdfs/' + req.params.path + '/' + encodeURIComponent(filename)));
+    }
     res.send('ok');
 });
 
@@ -164,7 +168,7 @@ function deleteOldPdf(now) {
                 try {
                     fs.rmdirSync('pdfs/' + folder);
                 } catch (e) {
-
+                    //folder not empty
                 }
             }, 2000);
         });
