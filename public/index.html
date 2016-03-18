@@ -10,6 +10,28 @@
         <input type="file" name="file" />
         <input type="submit">
     </form>
+    
+    <div id="pdf-container">
+        <div id="menu">
+            
+        </div>
+        <div id="list">
+            
+        </div>
+    </div>
 </body>
+
+<script>
+    function ajax(input/*method, route, params, callback*/) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (xhttp.readyState == 4 && xhttp.status == 200) {
+                callback(xhttp.responseText);
+            }
+        };
+        xhttp.open(input.method, input.route + '/' + ((input.method != 'POST' && input.params)?input.params:''), true);
+        xhttp.send((input.method == 'POST' && input.params)?input.params:null);
+    }
+</script>
 
 </html>

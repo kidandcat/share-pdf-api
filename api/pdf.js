@@ -114,7 +114,7 @@ router.delete('/pdf/:path/:id/:password', function(req, res, next) {
     }
 });
 
-router.get('/list/pdf/:path', function(req, res, next) {
+router.get('/pdf/list/:path', function(req, res, next) {
     if (fs.existsSync('pdfs/' + req.params.path)) {
         var response = { files: [] };
         fs.readdirSync('pdfs/' + req.params.path).forEach(function(file, index) {
@@ -134,11 +134,11 @@ router.get('/pdf/:path/:id', function(req, res, next) {
     fs.createReadStream('pdfs/' + req.params.path + '/' + encodeURIComponent(req.params.id)).pipe(res);
 });
 
-router.get('/view/pdf/:path/:id/', function(req, res, next) {
+router.get('/pdf/view/:path/:id/', function(req, res, next) {
     res.render('visor.jade', { pdf: req.params.path + '/' + encodeURIComponent(req.params.id) });
 });
 
-router.get('/view/pdf/:path/:id/:password', function(req, res, next) {
+router.get('/pdf/view/:path/:id/:password', function(req, res, next) {
     if (req.params.password == passwords[req.params.path + encodeURIComponent(req.params.id)]) {
         res.render('visorAdmin.jade', { pdf: req.params.path + '/' + encodeURIComponent(req.params.id) });
     } else {
