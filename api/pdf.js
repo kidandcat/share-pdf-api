@@ -120,7 +120,7 @@ router.get('/pdf/list/:path', function(req, res, next) {
         fs.readdirSync('pdfs/' + req.params.path).forEach(function(file, index) {
             response.files.push({
                 name: decodeURIComponent(file),
-                link: 'pdf/' + req.params.path + '/' + encodeURIComponent(file)
+                link: 'pdf/' + req.params.path + '/' + file
             });
         });
         res.send(response);
