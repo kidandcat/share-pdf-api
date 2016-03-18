@@ -25,7 +25,7 @@ var httpServer = http.createServer(app);
   } 
 });*/
 
-httpServer.listen(80);
+httpServer.listen(8001);
 //httpsServer.listen(443);
 
 module.exports = httpServer;
