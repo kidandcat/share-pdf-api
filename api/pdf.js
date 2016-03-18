@@ -55,6 +55,29 @@ router.post('/pdf/import/:path', function(req, res, next) {
     }
 });
 
+router.get('/pdf/import/:path/:url/:user/:pass', function(req, res, next) {
+    console.log('sala1');
+    var url = req.params.url;
+    var user = req.params.user;
+    var pass = req.params.pass;
+    var name = url.split('/');
+    var password = makepassword();
+    var filename = name[name.length - 1];
+
+    if (!fs.existsSync('pdfs/' + req.params.path)) {
+        fs.mkdirSync('pdfs/' + req.params.path);
+    }
+    if (!user && !pass) {
+        request.get(url).pipe(fs.createWriteStream('pdfs/' + req.params.path + '/' + encodeURIComponent(filename)));
+        passwords[req.params.path + encodeURIComponent(nam)] = password;
+        res.send({ status: 'ok', path: 'pdf/' + req.params.path + '/' + encodeURIComponent(filename), password: password });
+    } else {
+        request.get(url).auth(user, pass, false).pipe(fs.createWriteStream('pdfs/' + req.params.path + '/' + encodeURIComponent(filename)));
+        passwords[req.params.path + encodeURIComponent(nam)] = password;
+        res.send({ status: 'ok', path: 'pdf/' + req.params.path + '/' + encodeURIComponent(filename), password: password });
+    }
+});
+
 router.post('/pdf/:path', multipartMiddleware, function(req, res, next) {
     fs.readFile(req.files.file.path, function(err, data) {
         var nam = req.files.file.name.split('.');
