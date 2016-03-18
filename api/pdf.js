@@ -4,6 +4,9 @@ var multipart = require('connect-multiparty');
 var path = require('path');
 var multipartMiddleware = multipart();
 var router = express.Router();
+var http = require('http');
+var https = require('https')
+var request = require('request');
 var crypto = require('crypto');
 var app = require('../app.js');
 var io = require('socket.io')(app);
@@ -11,6 +14,38 @@ var io = require('socket.io')(app);
 var pdfRooms = [];
 var passwords = [];
 
+
+router.get('/pdf/vdrive/list/:user/:pass', function(req, res, next) {
+    var wfs = require("webdav-fs")(
+        'https://vdrive.netelip.com/remote.php/webdav/',
+        req.params.user,
+        req.params.pass
+    );
+
+    wfs.readdir("/", function(err, contents) {
+        if (!err) {
+            res.send(contents);
+        } else {
+            res.send(err.message);
+        }
+    });
+});
+
+//url, user, pass
+router.post('/pdf/vdrive/import/:path', function(req, res, next) {
+    console.log('sala1');
+    var url = req.body.url;
+    var user = req.body.user;
+    var pass = req.body.pass;
+    var name = url.split('/');
+    var filename = name[name.length - 1];
+
+    if (!fs.existsSync('pdfs/' + req.params.path)) {
+        fs.mkdirSync('pdfs/' + req.params.path);
+    }
+    request.get(url).auth(user, pass, false).pipe(fs.createWriteStream('pdfs/' + req.params.path + '/' + encodeURIComponent(filename)));
+    res.send('ok');
+});
 
 router.post('/pdf/:path', multipartMiddleware, function(req, res, next) {
     fs.readFile(req.files.file.path, function(err, data) {
