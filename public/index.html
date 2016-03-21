@@ -11,6 +11,7 @@
         <input type="text" id="room">
         <input type="file" id="file-select" name="file" />
         <input type="submit" id="upload-button">
+        <button onclick="listVdrive()">vDrive</button>
     </form>
     
     <div id="pdf-container">
@@ -71,8 +72,6 @@
     }
     
     function listVdrive(){
-        
-        
         ajax({method: 'GET', route: '/pdf/vdrive/list/'  + prompt('vDrive user') + '/' + prompt('vDrive pass'), params: null, callback: function(res){
             try{
                 var response = JSON.parse(res);
@@ -85,7 +84,7 @@
                         noFirst = true;
                     }else{
                         var ln = file.link.split(':path').join(roomName.value);
-                        lista.innerHTML += '<a onclick="import(\'' + file.link + '\')">' + file.name + ' -> Importar</a><br>';
+                        lista.innerHTML += '<a onclick="import(\'' + ln + '\')">' + file.name + ' -> Importar</a><br>';
                     }
                 });
             }catch(e){
