@@ -47,7 +47,7 @@
         ajax({method: 'POST', route: '/pdf/' + roomName.value, params: formData, callback: function(ss){
             var s = JSON.parse(ss);
             console.log(s);
-            miLista.innerHTML += '<a onclick="openInIframe(\'' + '/pdf/view/' + s.path.split('pdf/')[1] + '/' + s.password + '\')">' + encodeURIComponent(s.path.split('/')[2]) + '</a><br>';
+            miLista.innerHTML += '<a onclick="openInIframe(\'' + '/pdf/view/' + s.path.split('pdf/')[1] + '/' + s.password + '\')">' + '(master) ' + encodeURIComponent(s.path.split('/')[2]) + '</a><br>';
         }});
     }
     
@@ -94,7 +94,8 @@
     function importa(link){
         ajax({method: 'GET', route: link, params: null, callback: function(ss){
             var s = JSON.parse(ss);
-            miLista.innerHTML += '<a onclick="openInIframe(\'' + '/pdf/view/' + s.path.split('pdf/')[1] + '/' + s.password + '\')">' + encodeURIComponent(s.path.split('/')[2]) + '</a><br>';
+            lista.innerHTML = '';
+            miLista.innerHTML += '<a onclick="openInIframe(\'' + '/pdf/view/' + s.path.split('pdf/')[1] + '/' + s.password + '\')">' + '(master) ' + encodeURIComponent(s.path.split('/')[2]) + '</a><br>';
         }});
     }
     
