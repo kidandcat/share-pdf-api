@@ -78,9 +78,15 @@
                 var response = JSON.parse(res);
                 lista.innerHTML = '';
                 console.log(response);
+                var noFirst = false;
                 response.forEach(function(file){
                     console.log(file);
-                    lista.innerHTML += '<a onclick="import(\'' + file.link + '\')">' + file.name + ' -> Importar</a><br>';
+                    if(!noFirst){
+                        noFirst = true;
+                    }else{
+                        var ln = file.link.split(':path').join(roomName.value);
+                        lista.innerHTML += '<a onclick="import(\'' + file.link + '\')">' + file.name + ' -> Importar</a><br>';
+                    }
                 });
             }catch(e){
                 lista.innerHTML = 'Error: ' + err;
