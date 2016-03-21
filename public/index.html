@@ -70,6 +70,24 @@
         document.querySelector('#pdf-visor').appendChild(ifr);
     }
     
+    function listVdrive(){
+        
+        
+        ajax({method: 'GET', route: '/pdf/vdrive/list/'  + prompt('vDrive user') + '/' + prompt('vDrive pass'), params: null, callback: function(res){
+            try{
+                var response = JSON.parse(res);
+                lista.innerHTML = '';
+                console.log(response);
+                response.forEach(function(file){
+                    console.log(file);
+                    lista.innerHTML += '<a onclick="import(\'' + file.link + '\')">' + file.name + ' -> Importar</a><br>';
+                });
+            }catch(e){
+                lista.innerHTML = 'Error: ' + err;
+            }
+        }});
+    }
+    
     function list(){
         ajax({method: 'GET', route: '/pdf/list/' + roomName.value, params: null, callback: function(res){
             var ok = true;
