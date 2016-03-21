@@ -37,6 +37,8 @@
     var lista = document.getElementById('lista');
     var miLista = document.getElementById('miLista');
     
+    roomName.value = prompt('Introduce un nombre de sala, se puede modificar despues, pero no puede estar vacio');
+    
     form.onsubmit = function(event) {
         event.preventDefault();
         uploadButton.innerHTML = 'Uploading...';
