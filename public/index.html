@@ -76,10 +76,8 @@
             try{
                 var response = JSON.parse(res);
                 lista.innerHTML = '';
-                console.log(response);
                 var noFirst = false;
                 response.forEach(function(file){
-                    console.log(file);
                     if(!noFirst){
                         noFirst = true;
                     }else{
@@ -95,7 +93,8 @@
     
     function importa(link){
         ajax({method: 'GET', route: link, params: null, callback: function(ss){
-            console.log(ss);
+            var s = JSON.parse(ss);
+            miLista.innerHTML += '<a onclick="openInIframe(\'' + '/pdf/view/' + s.path.split('pdf/')[1] + '/' + s.password + '\')">' + encodeURIComponent(s.path.split('/')[2]) + '</a><br>';
         }});
     }
     
