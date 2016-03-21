@@ -73,8 +73,10 @@
             }
             if(ok && response.files){
                 lista.innerHTML = '';
+                console.log(response);
                 response.files.forEach(function(file){
-                    lista.innerHTML += '<a onclick="openInIframe("' + '/pdf/view/' + file.link.split('/pdf/')[1] + '")">' + file.name + '</a><br>';
+                    console.log(file);
+                    lista.innerHTML += '<a onclick="openInIframe(\'' + '/pdf/view/' + file.link.split('/pdf/')[1] + '\')">' + file.name + '</a><br>';
                 });
             }else{
                 lista.innerHTML = 'Nothing found';
