@@ -219,6 +219,7 @@ deleteOldPdf(true);
 
 
 io.on('connection', function(socket) {
+    
     socket.on('pdf:new', function(data) {
         if (pdfRooms[data.pdf]) {
             pdfRooms[data.pdf]['master'] = socket;
