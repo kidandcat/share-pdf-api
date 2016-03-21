@@ -22,7 +22,6 @@
         </div>
     </div>
     <div id="pdf-visor">
-        <iframe src="" frameborder="0"></iframe>
     </div>
 </body>
 
@@ -40,7 +39,8 @@
         var files = fileSelect.files;
         var formData = new FormData();
         formData.append('file', files[0], files[0].name);
-        ajax({method: 'POST', route: '/pdf/' + roomName.value, params: formData, callback: function(s){
+        ajax({method: 'POST', route: '/pdf/' + roomName.value, params: formData, callback: function(ss){
+            var s = JSON.parse(ss);
             lista.innerHTML = 'Guarde la contraseña del pdf (es temporal, si la pierde, vuelva a subirlo): ' + s.password;
         }});
     }
@@ -60,6 +60,7 @@
         var ifr = document.createElement('iframe');
         ifr.setAttribute('id', 'iframe');
         ifr.setAttribute('src', link);
+        document.querySelector('#pdf-visor').appendChild(ifr);
     }
     
     function list(){
