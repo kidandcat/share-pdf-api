@@ -37,7 +37,9 @@
         var files = fileSelect.files;
         var formData = new FormData();
         formData.append('file', files[0], files[0].name);
-        ajax({method: 'POST', route: '/pdf/' + roomName.value, params: formData});
+        ajax({method: 'POST', route: '/pdf/' + roomName.value, params: formData, callback: function(s){
+            lista.innerHTML = s;
+        }});
     }
     
     function ajax(input/*method, route, params, callback*/) {
