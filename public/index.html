@@ -46,7 +46,7 @@
         ajax({method: 'POST', route: '/pdf/' + roomName.value, params: formData, callback: function(ss){
             var s = JSON.parse(ss);
             console.log(s);
-            miLista.innerHTML += '<a onclick="openInIframe(\'' + '/pdf/view/' + s.link.split('pdf/')[1] + '/' + s.password + '\')">' + s.name + '</a><br>';
+            miLista.innerHTML += '<a onclick="openInIframe(\'' + '/pdf/view/' + s.path.split('pdf/')[1] + '/' + s.password + '\')">' + s.name + '</a><br>';
         }});
     }
     
