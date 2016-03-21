@@ -54,6 +54,7 @@
     function list(){
         ajax({method: 'GET', route: '/pdf/list/' + roomName.value, params: null, callback: function(res){
             var ok = true;
+            console.log(res);
             try{
                 var response = JSON.parse(res);
             }catch(e){
