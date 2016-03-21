@@ -75,6 +75,8 @@
             if(ok && response.files){
                 lista.innerHTML = '';
                 response.files.forEach(function(file){
+                    console.log(file.link);
+                    console.log('/pdf/view/' + file.link.split('/pdf/')[1]);
                     lista.innerHTML += '<a onclick="openInIframe(\"' + '/pdf/view/' + file.link.split('/pdf/')[1] + '\")">' + file.name + '</a><br>';
                 });
             }else{
