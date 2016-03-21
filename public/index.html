@@ -53,8 +53,13 @@
     
     function list(){
         ajax({method: 'GET', route: '/pdf/list/' + roomName.value, params: null, callback: function(res){
-            var response = JSON.parse(res);
-            if(response.files){
+            var ok = true;
+            try{
+                var response = JSON.parse(res);
+            }catch(e){
+                ok = false;
+            }
+            if(ok && response.files){
                 lista.innerHTML = '';
                 response.files.forEach(function(file){
                     lista.innerHTML += '<a href="' + file.link + '">' + file.name + '</a><br>';
@@ -64,6 +69,8 @@
             }
         }});
     }
+    
+    
 </script>
 
 </html>
