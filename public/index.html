@@ -64,6 +64,8 @@
     function openInIframe(link){
         var ifr = document.createElement('iframe');
         ifr.setAttribute('id', 'iframe');
+        ifr.setAttribute('width', '600');
+        ifr.setAttribute('height', '400');
         ifr.setAttribute('src', link);
         document.querySelector('#pdf-visor').appendChild(ifr);
     }
