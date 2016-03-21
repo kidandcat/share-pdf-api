@@ -24,6 +24,9 @@ router.get('/pdf/vdrive/list/:user/:pass', function(req, res, next) {
 
     wfs.readdir("/", function(err, contents) {
         if (!err) {
+            res.forEach(function(f){
+                f.link('/pdf/import/:path/' + 'https://vdrive.netelip.com/remote.php/webdav/' + encodeURIComponent(f) + '/' + req.params.user + '/' + req.params.pass);
+            });
             res.send(contents);
         } else {
             res.send(err.message);
