@@ -6,29 +6,34 @@
 </head>
 
 <body>
-    <form id="pdf-form" action="" method="post" enctype="multipart/form-data">
-        <span>Sala:</span>
-        <input type="text" id="room">
-        <input type="file" id="file-select" name="file" />
-        <input type="submit" id="upload-button">
-        <button onclick="listVdrive()">vDrive</button>
-    </form>
-    
+
+    <span>Sala:</span>
+    <input type="text" id="room">
+    <br>
     <div id="pdf-container">
         <div id="menu">
-            <button onclick="list()">Lista</button>
+            <form id="pdf-form" action="" method="post" enctype="multipart/form-data">
+                <button onclick="listVdrive()">vDrive</button>
+                <button onclick="document.getElementById('file-select').click()" />Upload PDF</button>
+                <input type="file" id="file-select" onchange="document.getElementById('upload-button').click()" name="file" style="display: none;"/>
+                <input type="submit" id="upload-button" value="Subir" style="display: none;">
+            </form>
         </div>
+        <br>
+        Archivos de la sala
         <div id="lista">
-            
+
         </div>
+        <br>
+        Mis archivos
         <div id="miLista">
-            
+
         </div>
     </div>
+    <br>
     <div id="pdf-visor" width="600" height="400">
     </div>
 </body>
-
 <script>
     var form = document.getElementById('pdf-form');
     var fileSelect = document.getElementById('file-select');
@@ -70,6 +75,7 @@
         ifr.setAttribute('width', '600');
         ifr.setAttribute('height', '400');
         ifr.setAttribute('src', link);
+        document.querySelector('#pdf-visor').innerHTML = '';
         document.querySelector('#pdf-visor').appendChild(ifr);
     }
     
@@ -120,8 +126,9 @@
             }
         }});
     }
-    
-    
+    list();
+    setInterval(function(){list()}, 5000);
+
 </script>
 
 </html>
