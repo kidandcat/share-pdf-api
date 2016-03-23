@@ -15,6 +15,11 @@ var pdfRooms = [];
 var passwords = [];
 
 
+
+router.get('/pdf/vdrive/list/', function(req, res, next) {
+    res.sendFile(path.join(process.cwd(), 'public', 'vdrive.html'));
+});
+
 router.get('/pdf/vdrive/list/:user/:pass', function(req, res, next) {
     var wfs = require("webdav-fs")(
         'https://vdrive.netelip.com/remote.php/webdav/',
@@ -37,30 +42,6 @@ router.get('/pdf/vdrive/list/:user/:pass', function(req, res, next) {
         }
     });
 });
-
-//url, user, pass
-/*router.post('/pdf/import/:path', function(req, res, next) {
-    console.log('sala1');
-    var url = req.body.url;
-    var user = req.body.user;
-    var pass = req.body.pass;
-    var name = url.split('/');
-    var password = makepassword();
-    var filename = name[name.length - 1];
-
-    if (!fs.existsSync('pdfs/' + req.params.path)) {
-        fs.mkdirSync('pdfs/' + req.params.path);
-    }
-    if (!user && !pass) {
-        request.get(url).pipe(fs.createWriteStream('pdfs/' + req.params.path + '/' + encodeURIComponent(filename)));
-        passwords[req.params.path + encodeURIComponent(nam)] = password;
-        res.send({ status: 'ok', path: 'pdf/' + req.params.path + '/' + encodeURIComponent(filename), password: password });
-    } else {
-        request.get(url).auth(user, pass, false).pipe(fs.createWriteStream('pdfs/' + req.params.path + '/' + encodeURIComponent(filename)));
-        passwords[req.params.path + encodeURIComponent(nam)] = password;
-        res.send({ status: 'ok', path: 'pdf/' + req.params.path + '/' + encodeURIComponent(filename), password: password });
-    }
-});*/
 
 router.get('/pdf/import/:path/:url/:user/:pass', function(req, res, next) {
     console.log('sala1');

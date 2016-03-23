@@ -2,82 +2,186 @@
 <html>
 
 <head>
-
+    <style>
+        #pdf-controls #menu {
+            margin-bottom: 10px;
+        }
+        #pdf-controls .vdrive {
+            border: none;
+            background: #0089f2;
+            padding: 5px;
+            padding-left: 10px;
+            cursor: pointer;
+            padding-right: 10px;
+            border-radius: 3px;
+            text-shadow: 1px 1px 0 #0072ca;
+            color: #fff;
+            background-image: linear-gradient(#0089F2 0%, #0050ca 100%);
+        }
+        #pdf-controls .upload {
+            border: none;
+            background: lightgrey;
+            padding: 5px;
+            padding-left: 10px;
+            cursor: pointer;
+            padding-right: 10px;
+            border-radius: 3px;
+            text-shadow: 1px 1px 0 grey;
+            color: #fff;
+            background-image: linear-gradient(lightgrey 0%, grey 100%);
+        }
+        #pdf-controls .lista {
+            margin: 10px;
+        }
+        #pdf-controls .lista i {
+            color: blue;
+            display: block;
+            cursor: pointer;
+            display: inline-block;
+            text-decoration: none;
+        }
+        #pdf-controls .lista a {
+            color: gray;
+            display: block;
+            cursor: pointer;
+            display: inline-block;
+            text-decoration: none;
+            margin-left: 5px;
+        }
+    </style>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="font-awesome.min.css">
 </head>
 
 <body>
 
-    <span>Sala:</span>
-    <input type="text" id="room">
-    <br>
-    <div id="pdf-container">
-        <div id="menu">
-            <form id="pdf-form" action="" method="post" enctype="multipart/form-data">
-                <button onclick="listVdrive()">vDrive</button>
-                <button onclick="document.getElementById('file-select').click()" />Upload PDF</button>
-                <input type="file" id="file-select" onchange="document.getElementById('upload-button').click()" name="file" style="display: none;"/>
-                <input type="submit" id="upload-button" value="Subir" style="display: none;">
-            </form>
-        </div>
-        <br>
-        Archivos de la sala
-        <div id="lista">
 
-        </div>
-        <br>
-        Mis archivos
-        <div id="miLista">
+    <div id="pdf-controls">
+        <template v-if="noRoom">
+            <span>Sala:</span>
+            <input type="text" v-model="room" id="room" v-on:keyup.enter="registerRoom" autofocus>
+        </template>
+        <template v-else>
+            <div id="pdf-controls">
+                <div id="menu">
+                    <button class="vdrive" v-on:click="listVdrive">vDrive</button>
+                    <button class="upload" onclick="document.getElementById('file-select').click()" />Upload PDF</button>
+                    <input type="file" id="file-select" onchange="pdf.submit()" name="file" style="display: none;" />
+                </div>
+                <div id="roomFiles">
+                    <span>Archivos de la sala <i id="load_list" class="fa fa-refresh" v-on:click="list"></i></span>
+                    <div class="lista">
+                        <template v-for="file in filesRoom">
+                            <div>
+                                <i onclick="pdf.open('{{ '/pdf/view/' + file.link.split('pdf/')[1] }}')">{{ decodeURIComponent(file.name) }}</i>
+                                <a class="fa fa-external-link" href="{{ '/pdf/view/' + file.link.split('pdf/')[1] }}" target="_blank"></a>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+                <div id="ownFiles">
+                    <span>Mis archivos</span>
+                    <div class="lista">
+                        <template v-for="file in filesMine">
+                            <div>
+                                <i onclick="pdf.open('{{ file.path + '/' + file.password }}')">{{ decodeURIComponent(file.name) }}</i>
+                                <a class="fa fa-external-link" onclick="window.open('{{ file.path + '/' + file.password }}', '_blank', 'width=600,height=400')"></a>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div id="pdf-visor">
+                {{{ iframe }}}
+            </div>
+        </template>
+    </div>
 
-        </div>
-    </div>
-    <br>
-    <div id="pdf-visor" width="600" height="400">
-    </div>
+
 </body>
+<script src="vue.js"></script>
+<script src="vue-resource.min.js"></script>
 <script>
-    var form = document.getElementById('pdf-form');
-    var fileSelect = document.getElementById('file-select');
-    var uploadButton = document.getElementById('upload-button');
-    var roomName = document.getElementById('room');
-    var lista = document.getElementById('lista');
-    var miLista = document.getElementById('miLista');
-    
-    roomName.value = prompt('Introduce un nombre de sala, se puede modificar despues, pero no puede estar vacio');
-    
-    form.onsubmit = function(event) {
-        event.preventDefault();
-        uploadButton.innerHTML = 'Uploading...';
-
-        var files = fileSelect.files;
-        var formData = new FormData();
-        formData.append('file', files[0], files[0].name);
-        ajax({method: 'POST', route: '/pdf/' + roomName.value, params: formData, callback: function(ss){
-            var s = JSON.parse(ss);
-            console.log(s);
-            miLista.innerHTML += '<a onclick="openInIframe(\'' + '/pdf/view/' + s.path.split('pdf/')[1] + '/' + s.password + '\')">' + '(master) ' + encodeURIComponent(s.path.split('/')[2]) + '</a><br>';
-        }});
-    }
-    
-    function ajax(input/*method, route, params, callback*/) {
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if (xhttp.readyState == 4 && xhttp.status == 200 && input.callback) {
-                input.callback(xhttp.responseText);
+    var pdf = new Vue({
+        el: '#pdf-controls',
+        data: {
+            room: '',
+            noRoom: true,
+            iframe: '',
+            filesRoom: [
+                
+            ],
+            filesMine: [
+                
+            ]
+        },
+        methods: {
+            registerRoom: function() {
+                console.log('1');
+                if(this.room != ''){
+                    this.noRoom = false;
+                }
+            },
+            submit: function(){
+                var self = this;
+                var files = document.getElementById('file-select').files;
+                var formData = new FormData();
+                formData.append('file', files[0], files[0].name);
+                Vue.http.post('/pdf/' + this.room, formData).then(function(res){
+                    self.filesMine.push({
+                        name: res.data.path.split('/')[2],
+                        path: '/pdf/view/' + res.data.path.split('pdf/')[1],
+                        password: res.data.password
+                    });
+                }, function(err){
+                    console.log(err);
+                });
+            },
+            list: function(){
+                var self = this;
+                var spin1 = document.getElementById('load_list');
+                spin1.classList.add('fa-spin');
+                Vue.http.get('/pdf/list/' + this.room).then(function(res){
+                    self.filesRoom = res.data.files;
+                    spin1.classList.remove('fa-spin');
+                }, function(err){
+                    console.log(err);
+                    spin1.classList.remove('fa-spin');
+                });
+            },
+            open: function(link){
+                var ifr = document.createElement('iframe');
+                ifr.setAttribute('id', 'iframe');
+                ifr.setAttribute('width', '600');
+                ifr.setAttribute('height', '400');
+                ifr.setAttribute('src', link);
+                ifr.setAttribute('name', 'myFrame');
+                var trick = document.createElement('hack');
+                trick.appendChild(ifr);
+                this.iframe = trick.innerHTML;
+            },
+            listVdrive: function(){
+                var self = this;
+                // window.opener.postMessage(true, '*'); //or false
+                var top = window.top.outerHeight / 2 + window.top.screenY - ( 500 / 2);
+                var left = window.top.outerWidth / 2 + window.top.screenX - ( 500 / 2);
+                var ww = window.open('/pdf/vdrive/list/', '_blank', "height=500,width=500, top=" + top + ", left=" + left);
+                ww.room = this.room;
+                window.addEventListener("message", function(e) {
+                    var res = JSON.parse(e.data);
+                    self.filesMine.push({
+                        name: res.data.path.split('/')[2],
+                        path: '/pdf/view/' + res.data.path.split('pdf/')[1],
+                        password: res.data.password
+                    });
+                })
             }
-        };
-        xhttp.open(input.method, input.route + '/' + ((input.method != 'POST' && input.params)?input.params:''), true);
-        xhttp.send((input.method == 'POST' && input.params)?input.params:null);
-    }
+        }
+    });
     
-    function openInIframe(link){
-        var ifr = document.createElement('iframe');
-        ifr.setAttribute('id', 'iframe');
-        ifr.setAttribute('width', '600');
-        ifr.setAttribute('height', '400');
-        ifr.setAttribute('src', link);
-        document.querySelector('#pdf-visor').innerHTML = '';
-        document.querySelector('#pdf-visor').appendChild(ifr);
-    }
+    /*
+
     
     function listVdrive(){
         ajax({method: 'GET', route: '/pdf/vdrive/list/'  + prompt('vDrive user') + '/' + prompt('vDrive pass'), params: null, callback: function(res){
@@ -127,7 +231,7 @@
         }});
     }
     list();
-    setInterval(function(){list()}, 5000);
+    setInterval(function(){list()}, 5000);*/
 
 </script>
 
