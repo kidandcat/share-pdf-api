@@ -7265,9 +7265,7 @@ socket.on('pdf:page', function(data){
 });
 
 socket.on('pdf:scroll', function(data){
-    console.log('scroll');
-    var total = Math.floor(data.percentaje/100 * canvas.height);
-    document.querySelector('.scroll').scrollTop = total;
+    document.querySelector('.scroll').scrollTop = data.percentaje;
 });
 
 function nPage(){
@@ -7286,6 +7284,5 @@ function pPage(){
 
 
 document.querySelector('.scroll').addEventListener('scroll', function(){
-    var percentaje = Math.floor((document.querySelector('.scroll').scrollTop * 100) / canvas.height);
-    socket.emit('pdf:scroll', { percentaje: percentaje, pdf: url.split('/')[1]  });
+    socket.emit('pdf:scroll', { percentaje: document.querySelector('.scroll').scrollTop, pdf: url.split('/')[1]  });
 });

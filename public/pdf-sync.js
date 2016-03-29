@@ -7267,6 +7267,5 @@ socket.on('pdf:page', function(data){
 });
 
 socket.on('pdf:scroll', function(data){
-    var total = Math.floor(data.percentaje/100 * canvas.height);
-    document.querySelector('.scroll').scrollTop = total;
+    document.querySelector('.scroll').scrollTop = data.percentaje;
 });
