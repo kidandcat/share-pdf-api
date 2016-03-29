@@ -31,8 +31,8 @@ function renderPage(num) {
         var viewport = page.getViewport(scale);
         canvas.height = viewport.height;
         canvas.width = viewport.width;
-        document.querySelector('#scroll').width = canvas.width;
-        document.querySelector('#scroll').height = canvas.height;
+        document.querySelector('.scroll').width = canvas.width;
+        document.querySelector('.scroll').height = canvas.height;
 
         // Render PDF page into canvas context
         var renderContext = {
