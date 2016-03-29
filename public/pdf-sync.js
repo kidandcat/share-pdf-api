@@ -7269,3 +7269,13 @@ socket.on('pdf:page', function(data){
 socket.on('pdf:scroll', function(data){
     document.querySelector('.scroll').scrollTop = data.percentaje;
 });
+
+//TODO
+/*
+
+(function(){
+    //test with anon to evade collisions
+})();
+
+
+*/
