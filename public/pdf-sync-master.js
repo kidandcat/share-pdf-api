@@ -7284,7 +7284,7 @@ function pPage(){
 }
 
 
-document.querySelector('.scroll').addEventListener(mousewheelevt, function(){
+document.querySelector('.scroll').addEventListener('scroll', function(){
     var percentaje = Math.floor((document.querySelector('.scroll').scrollTop * 100) / canvas.height);
     socket.emit('pdf:scroll', { percentaje: percentaje });
     console.log(percentaje);
