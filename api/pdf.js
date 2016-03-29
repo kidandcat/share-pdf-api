@@ -236,14 +236,14 @@ io.on('connection', function(socket) {
             pdfRooms[data.pdf].push(socket);
             setTimeout(function() {
                 socket.emit('pdf:page', { page: pdfRooms[data.pdf]['page'] });
-            }, 1000);
+            }, 3000);
         } else {
             pdfRooms[data.pdf] = [];
             pdfRooms[data.pdf]['page'] = 1;
             pdfRooms[data.pdf].push(socket);
             setTimeout(function() {
                 socket.emit('pdf:page', { page: pdfRooms[data.pdf]['page'] });
-            }, 1000);
+            }, 3000);
         }
     });
 });
