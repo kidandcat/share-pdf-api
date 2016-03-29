@@ -75,7 +75,7 @@
                         <template v-for="file in filesRoom">
                             <div>
                                 <i onclick="pdf.open('{{ '/pdf/view/' + file.link.split('pdf/')[1] }}')">{{ decodeURIComponent(file.name) }}</i>
-                                <a class="fa fa-external-link" href="{{ '/pdf/view/' + file.link.split('pdf/')[1] }}" target="_blank"></a>
+                                <a class="fa fa-external-link" onclick="window.open('{{ '/pdf/view/' + file.link.split('pdf/')[1] }}', '_blank', 'width=600,height=400')"></a>
                             </div>
                         </template>
                     </div>
