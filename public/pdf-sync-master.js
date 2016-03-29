@@ -7277,3 +7277,10 @@ function pPage(){
         socket.emit('pdf:change', { page: pageNum, pdf: url.split('/')[1] });
     },1000);
 }
+
+
+document.querySelector('.scroll').addEventListener('scroll', function(){
+    var percentaje = Math.floor((document.querySelector('.scroll').scrollTop * 100) / canvas.height);
+    socket.emit('pdf:scroll', { percentaje: percentaje });
+    console.log(percentaje);
+});

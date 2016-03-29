@@ -7265,3 +7265,4 @@ socket.on('pdf:page', function(data){
     console.log('socket:page');
     queueRenderPage(data.page);
 });
+
