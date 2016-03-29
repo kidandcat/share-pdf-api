@@ -231,7 +231,7 @@ io.on('connection', function(socket) {
         }
     });
     
-    socket.on('pdf:change', function(data) {
+    socket.on('pdf:scroll', function(data) {
         if (socket == pdfRooms[data.pdf]['master']) {
             pdfRooms[data.pdf].forEach(function(s) {
                 try {
