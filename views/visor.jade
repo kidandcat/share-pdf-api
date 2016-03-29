@@ -9,8 +9,8 @@ html
         body{
             display: flex;
         }
-        canvas{
-            /*flex: 1;*/
+        .scroll{
+            overflow-y: scroll;
         }
         canvas {
             outline: 0px;
@@ -22,8 +22,8 @@ html
         }
 
     body
-
-      canvas#the-canvas(style='border:1px solid black')
+      div.scroll
+        canvas#the-canvas(style='border:1px solid black')
       
       script(src='/pdf.js')
       script var url = '/pdf/#{ pdf }';
