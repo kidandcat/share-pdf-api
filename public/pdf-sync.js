@@ -7263,5 +7263,5 @@ socket.on('connect', function(){
 
 socket.on('pdf:page', function(data){
     console.log('socket:page');
-    renderPage(data.page);
+    queueRenderPage(data.page);
 });

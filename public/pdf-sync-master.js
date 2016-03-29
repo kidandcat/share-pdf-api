@@ -7261,7 +7261,7 @@ socket.on('connect', function(){
 });
 
 socket.on('pdf:page', function(data){
-    renderPage(data.page);
+    queueRenderPage(data.page);
 });
 
 function nPage(){
