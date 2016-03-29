@@ -158,7 +158,7 @@
                 try{
                     spin1.classList.add('fa-spin');
                 }catch(e){}
-                
+                //TODO link to visor pdf files only
                 Vue.http.get('/pdf/list/' + this.room).then(function(res){
                     self.filesRoom = res.data.files;
                     try{
