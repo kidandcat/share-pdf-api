@@ -9,14 +9,23 @@ html
         body{
             display: flex;
         }
-        canvas{
-            flex: 1;
+        .scroll{
+            overflow-y: scroll;
+        }
+        canvas {
+            outline: 0px;
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: auto;
         }
 
     body
       button#prev Previous
       button#next Next
-      canvas#the-canvas(style='border:1px solid black')
+      div.scroll
+          canvas#the-canvas(style='border:1px solid black')
       
       script(src='/pdf.js')
       script var url = '/pdf/#{ pdf }';
