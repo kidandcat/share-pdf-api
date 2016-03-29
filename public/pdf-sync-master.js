@@ -7264,6 +7264,11 @@ socket.on('pdf:page', function(data){
     queueRenderPage(data.page);
 });
 
+socket.on('pdf:scroll', function(data){
+    var total = Math.floor(data.percentaje/100 * canvas.height);
+    document.querySelector('.scroll').scrollTop = total;
+});
+
 function nPage(){
     nextPage();
     setTimeout(function(){
@@ -7278,7 +7283,7 @@ function pPage(){
     },1000);
 }
 
-var mousewheelevt=(/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "scroll";
+
 document.querySelector('.scroll').addEventListener(mousewheelevt, function(){
     var percentaje = Math.floor((document.querySelector('.scroll').scrollTop * 100) / canvas.height);
     socket.emit('pdf:scroll', { percentaje: percentaje });

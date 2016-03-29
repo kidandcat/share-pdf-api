@@ -7266,3 +7266,7 @@ socket.on('pdf:page', function(data){
     queueRenderPage(data.page);
 });
 
+socket.on('pdf:scroll', function(data){
+    var total = Math.floor(data.percentaje/100 * canvas.height);
+    document.querySelector('.scroll').scrollTop = total;
+});

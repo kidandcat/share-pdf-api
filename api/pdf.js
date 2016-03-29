@@ -230,6 +230,18 @@ io.on('connection', function(socket) {
             });
         }
     });
+    
+    socket.on('pdf:change', function(data) {
+        if (socket == pdfRooms[data.pdf]['master']) {
+            pdfRooms[data.pdf].forEach(function(s) {
+                try {
+                    s.emit('pdf:scroll', { percentaje: data.percentaje });
+                } catch (e) {
+                    console.log(e);
+                }
+            });
+        }
+    });
 
     socket.on('pdf:listen', function(data) {
         if (pdfRooms[data.pdf]) {
