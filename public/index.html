@@ -180,59 +180,9 @@
             }
         }
     });
-    
-    /*
 
-    
-    function listVdrive(){
-        ajax({method: 'GET', route: '/pdf/vdrive/list/'  + prompt('vDrive user') + '/' + prompt('vDrive pass'), params: null, callback: function(res){
-            try{
-                var response = JSON.parse(res);
-                lista.innerHTML = '';
-                var noFirst = false;
-                response.forEach(function(file){
-                    if(!noFirst){
-                        noFirst = true;
-                    }else{
-                        var ln = file.link.split(':path').join(roomName.value);
-                        lista.innerHTML += '<a onclick="importa(\'' + ln + '\')">' + file.name + ' -> Importar</a><br>';
-                    }
-                });
-            }catch(e){
-                lista.innerHTML = 'Error: ' + err;
-            }
-        }});
-    }
-    
-    function importa(link){
-        ajax({method: 'GET', route: link, params: null, callback: function(ss){
-            var s = JSON.parse(ss);
-            lista.innerHTML = '';
-            miLista.innerHTML += '<a onclick="openInIframe(\'' + '/pdf/view/' + s.path.split('pdf/')[1] + '/' + s.password + '\')">' + '(master) ' + encodeURIComponent(s.path.split('/')[2]) + '</a><br>';
-        }});
-    }
-    
-    function list(){
-        ajax({method: 'GET', route: '/pdf/list/' + roomName.value, params: null, callback: function(res){
-            var ok = true;
-            try{
-                var response = JSON.parse(res);
-            }catch(e){
-                ok = false;
-            }
-            if(ok && response.files){
-                lista.innerHTML = '';
-                console.log(response);
-                response.files.forEach(function(file){
-                    lista.innerHTML += '<a onclick="openInIframe(\'' + '/pdf/view/' + file.link.split('pdf/')[1] + '\')">' + file.name + '</a><br>';
-                });
-            }else{
-                lista.innerHTML = 'Nothing found';
-            }
-        }});
-    }
-    list();
-    setInterval(function(){list()}, 5000);*/
+    pdf.list();
+    setInterval(function(){pdf.list()}, 5000);
 
 </script>
 
