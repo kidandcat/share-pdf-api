@@ -164,7 +164,6 @@
             },
             listVdrive: function(){
                 var self = this;
-                // window.opener.postMessage(true, '*'); //or false
                 var top = window.top.outerHeight / 2 + window.top.screenY - ( 500 / 2);
                 var left = window.top.outerWidth / 2 + window.top.screenX - ( 500 / 2);
                 var ww = window.open('/pdf/vdrive/list/', '_blank', "height=500,width=500, top=" + top + ", left=" + left);
@@ -181,8 +180,19 @@
         }
     });
 
-    pdf.list();
-    setInterval(function(){pdf.list()}, 5000);
+    try{
+        pdf.list();
+    }catch(e){
+        
+    }
+    
+    setInterval(function(){
+        try{
+            pdf.list();
+        }catch(e){
+            
+        }    
+    }, 5000);
 
 </script>
 
