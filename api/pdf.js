@@ -232,11 +232,9 @@ io.on('connection', function(socket) {
     });
     
     socket.on('pdf:scroll', function(data) {
-        console.log('per1');
         if (socket == pdfRooms[data.pdf]['master']) {
             pdfRooms[data.pdf].forEach(function(s) {
                 try {
-                    console.log('per2');
                     s.emit('pdf:scroll', { percentaje: data.percentaje });
                 } catch (e) {
                     console.log(e);

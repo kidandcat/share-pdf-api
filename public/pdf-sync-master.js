@@ -7288,5 +7288,4 @@ function pPage(){
 document.querySelector('.scroll').addEventListener('scroll', function(){
     var percentaje = Math.floor((document.querySelector('.scroll').scrollTop * 100) / canvas.height);
     socket.emit('pdf:scroll', { percentaje: percentaje, pdf: url.split('/')[1]  });
-    console.log(percentaje);
 });
