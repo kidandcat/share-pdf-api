@@ -94,7 +94,7 @@ router.post('/pdf/:path', multipartMiddleware, function(req, res, next) {
 
 router.delete('/pdf/:path/:id/:password', function(req, res, next) {
     if (req.params.password == passwords[req.params.path + encodeURIComponent(req.params.id)]) {
-        deleteFile('pdfs/' + req.params.path + '/' + req.params.id, function(result) {
+        deleteFile('pdfs/' + req.params.path + '/' + encodeURIComponent(req.params.id), function(result) {
             res.send(result);
         });
     } else {

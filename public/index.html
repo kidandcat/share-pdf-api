@@ -85,6 +85,7 @@
                     <div class="lista">
                         <template v-for="file in filesMine">
                             <div>
+                                <a class="fa fa-trash-o" onclick="pdf.delete('{{ file.name }}', '{{ file.password }}')"></a>
                                 <i onclick="pdf.open('{{ file.path + '/' + file.password }}')">{{ decodeURIComponent(file.name) }}</i>
                                 <a class="fa fa-external-link" onclick="window.open('{{ file.path + '/' + file.password }}', '_blank', 'width=600,height=400')"></a>
                             </div>
@@ -139,16 +140,35 @@
                     console.log(err);
                 });
             },
+            delete: function(name, password){
+                var self = this;
+                Vue.http.delete('/pdf/' + this.room + '/' + name + '/' + password).then(function(res){
+                    self.filesMine.forEach(function(f){
+                        if(f.name == name){
+                            self.filesMine.splice(self.filesMine.indexOf(f), 1);
+                        }
+                    });
+                }, function(err){
+                    console.log(err);
+                });
+            },
             list: function(){
                 var self = this;
                 var spin1 = document.getElementById('load_list');
-                spin1.classList.add('fa-spin');
+                try{
+                    spin1.classList.add('fa-spin');
+                }catch(e){}
+                
                 Vue.http.get('/pdf/list/' + this.room).then(function(res){
                     self.filesRoom = res.data.files;
-                    spin1.classList.remove('fa-spin');
+                    try{
+                        spin1.classList.remove('fa-spin');
+                    }catch(e){}
                 }, function(err){
                     console.log(err);
-                    spin1.classList.remove('fa-spin');
+                    try{
+                        spin1.classList.remove('fa-spin');
+                    }catch(e){}
                 });
             },
             open: function(link){
@@ -180,18 +200,11 @@
         }
     });
 
-    try{
-        pdf.list();
-    }catch(e){
-        
-    }
+
+    pdf.list();
     
     setInterval(function(){
-        try{
-            pdf.list();
-        }catch(e){
-            
-        }    
+        pdf.list();
     }, 5000);
 
 </script>
