@@ -128,8 +128,6 @@
             margin: 5px;
             flex: none;
             color: white;
-            text-align: justify;
-            text-justify: inter-word;
         }
         
         .off-canvas {
