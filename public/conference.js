@@ -16979,6 +16979,8 @@ var pdf;
                     '<button class="vdrive" v-on:click="listVdrive">vDrive</button>'+
                     '<button class="upload" onclick="document.getElementById(\'file-select\').click()" />Upload</button>'+
                     '<input type="file" id="file-select" onchange="pdf.submit()" name="file" style="display: none;" />'+
+                    '<button class="upload" onclick="document.getElementById(\'pdf-select\').click()" />PDF</button>'+
+                    '<input type="file" id="pdf-select" onchange="pdf.submitPDF()" name="file" style="display: none;" />'+
                 '</div>'+
                 '<div id="roomFiles">'+
                     '<span>Archivos de la sala <i id="load_list" class="fa fa-refresh" v-on:click="list"></i></span>'+
@@ -17023,6 +17025,23 @@ var pdf;
                 var formData = new FormData();
                 formData.append('file', files[0], files[0].name);
                 Vue.http.post('/pdf/' + this.room, formData).then(function(res){
+                    self.filesMine.push({
+                        name: res.data.path.split('/')[2],
+                        path: res.data.path,
+                        password: res.data.password
+                    });
+                }, function(err){
+                    console.log(err);
+                });
+            },
+            submitPDF: function(){
+                var self = this;
+                var files = document.getElementById('pdf-select').files;
+                var formData = new FormData();
+                formData.append('file', files[0], files[0].name);
+                Vue.http.post('/pdf/' + this.room, formData).then(function(res){
+                    self.open('/pdf/view/' + res.data.path.split('pdf/')[1] + '/' + res.data.password);
+                    socket.emit('pdf:open', { url: '/pdf/view/' + res.data.path.split('pdf/')[1] });
                     self.filesMine.push({
                         name: res.data.path.split('/')[2],
                         path: res.data.path,
@@ -17084,7 +17103,7 @@ var pdf;
                 ifr.setAttribute('name', 'myFrame');
                 var trick = document.createElement('hack');
                 trick.appendChild(ifr);
-                document.querySelector('frameId') = trick.innerHTML;
+                document.querySelector('#pdf-frame').innerHTML = trick.innerHTML;
             },
             listVdrive: function(){
                 var self = this;
@@ -17193,6 +17212,10 @@ var pdf;
 
     socket.on('chat:msg', function(data){
         chat.addMsg(data.msg, data.nick, false);
+    });
+    
+    socket.on('pdf:open', function(data){
+        pdf.open(data.url);
     });
     
 })();

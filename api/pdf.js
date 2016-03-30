@@ -216,6 +216,10 @@ io.on('connection', function(socket) {
             pdfRooms[data.pdf]['master'] = socket;
         }
     });
+    
+    socket.on('pdf:open', function(data) {
+        socket.broadcast.to(socket.room).emit('pdf:open', data);
+    });
 
     socket.on('pdf:change', function(data) {
         if (socket == pdfRooms[data.pdf]['master']) {

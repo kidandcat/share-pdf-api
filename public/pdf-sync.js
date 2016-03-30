@@ -7257,7 +7257,7 @@ function toArray(list, index) {
 var socket2 = io();
 
 socket2.on('connect', function(){
-    socket.emit('pdf:listen', { pdf: url.split('/')[1] });
+    socket2.emit('pdf:listen', { pdf: url.split('/')[1] });
 });
 
 socket2.on('pdf:page', function(data){
