@@ -4,8 +4,18 @@
 <head>
     <style>
         #pdf-controls #menu {
+            margin-top: 20px;
             margin-bottom: 10px;
         }
+        
+        #pdf-controls {
+            color: white;
+        }
+        
+        #pdf-controls #menu button {
+            margin: 10px;
+        }
+        
         #pdf-controls .vdrive {
             border: none;
             background: #0089f2;
@@ -18,6 +28,7 @@
             color: #fff;
             background-image: linear-gradient(#0089F2 0%, #0050ca 100%);
         }
+        
         #pdf-controls .upload {
             border: none;
             background: lightgrey;
@@ -30,16 +41,19 @@
             color: #fff;
             background-image: linear-gradient(lightgrey 0%, grey 100%);
         }
+        
         #pdf-controls .lista {
             margin: 10px;
         }
+        
         #pdf-controls .lista i {
-            color: blue;
+            color: deepskyblue;
             display: block;
             cursor: pointer;
             display: inline-block;
             text-decoration: none;
         }
+        
         #pdf-controls .lista a {
             color: gray;
             display: block;
@@ -48,69 +62,160 @@
             text-decoration: none;
             margin-left: 5px;
         }
+        
+        #chat {
+            width: 100%;
+        }
+        
+        #chat #area {
+            min-height: 180px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        #chat button {
+            width: 14%;
+            border: none;
+            background: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        #chat input {
+            width: 80%;
+            border: 1px solid grey;
+            outline: none;
+            border-radius: 5px;
+            padding: 5px;
+        }
+        
+        #chat input:focus {
+            border: 1px solid deepskyblue;
+        }
+        
+        #chat .yo {
+            flex-direction: row-reverse;
+        }
+        
+        #chat .msg-block {
+            display: flex;
+            align-items: center;
+            max-width: 340px;
+        }
+        
+        #chat .user {
+            display: inline-block;
+            color: gray;
+            margin: 5px;
+            flex: none;
+        }
+        
+        #chat .message {
+            max-width: 80%;
+            padding: 10px;
+            border: 1px solid deepskyblue;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 5px;
+            flex: none;
+            color: white;
+        }
+        
+        .off-canvas {
+            display: block;
+            position: fixed;
+            top: 0px;
+            right: -350px;
+            transition: all ease .3s;
+            width: 350px;
+            height: 100vh;
+            text-align: center;
+            background-color: rgb(49, 59, 61);
+        }
+        
+        #toggler {
+            width: 50px;
+            height: 50px;
+            background-color: rgb(49, 59, 61);
+            transform: translate(-100%, 500%);
+            border-radius: 10px 0 0 10px;
+            cursor: pointer;
+        }
+        
+        #toggler div {
+            color: white;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 25px;
+        }
+        
+        .move {
+            right: 0;
+            transition: all .3s ease
+        }
+        
+        .move #toggler div {
+            transform: rotate(180deg) translate(50%, 50%);
+            transition: all .3s ease
+        }
     </style>
-    <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="font-awesome.min.css">
-    <!-- <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet"> -->
 </head>
 
 <body>
-
-
-    <div id="pdf-controls">
-        <template v-if="noRoom">
-            <span>Sala:</span>
-            <input type="text" v-model="room" id="room" v-on:keyup.enter="registerRoom" autofocus>
-        </template>
-        <template v-else>
-            <div id="pdf-controls">
-                <div id="menu">
-                    <button class="vdrive" v-on:click="listVdrive">vDrive</button>
-                    <button class="upload" onclick="document.getElementById('file-select').click()" />Upload PDF</button>
-                    <input type="file" id="file-select" onchange="pdf.submit()" name="file" style="display: none;" />
-                </div>
-                <div id="roomFiles">
-                    <span>Archivos de la sala <i id="load_list" class="fa fa-refresh" v-on:click="list"></i></span>
-                    <div class="lista">
-                        <template v-for="file in filesRoom">
-                            <div>
-                                <i onclick="pdf.open('{{ '/pdf/view/' + file.link.split('pdf/')[1] }}')">{{ decodeURIComponent(file.name) }}</i>
-                                <a class="fa fa-external-link" onclick="window.open('{{ '/pdf/view/' + file.link.split('pdf/')[1] }}', '_blank', 'width=600,height=400')"></a>
-                            </div>
-                        </template>
-                    </div>
-                </div>
-                <div id="ownFiles">
-                    <span>Mis archivos</span>
-                    <div class="lista">
-                        <template v-for="file in filesMine">
-                            <div>
-                                <a class="fa fa-trash-o" onclick="pdf.delete('{{ file.name }}', '{{ file.password }}')"></a>
-                                <i onclick="pdf.open('{{ file.path + '/' + file.password }}')">{{ decodeURIComponent(file.name) }}</i>
-                                <a class="fa fa-external-link" onclick="window.open('{{ file.path + '/' + file.password }}', '_blank', 'width=600,height=400')"></a>
-                            </div>
-                        </template>
-                    </div>
-                </div>
+    <div class="off-canvas">
+        <div id="toggler">
+            <div>
+                <
             </div>
-            <br>
-            <div id="pdf-visor">
-                {{{ iframe }}}
-            </div>
-        </template>
+        </div>
+        <div id="chat"></div>
+        <div id="pdf"></div>
     </div>
-
-
 </body>
+<script src="socket.io.js"></script>
 <script src="vue.js"></script>
 <script src="vue-resource.min.js"></script>
 <script>
+    var pdfTemplate = '<div id="pdf-controls">'+
+            '<div id="pdf-controls">'+
+                '<div id="menu">'+
+                    '<button class="vdrive" v-on:click="listVdrive">vDrive</button>'+
+                    '<button class="upload" onclick="document.getElementById(\'file-select\').click()" />Upload</button>'+
+                    '<input type="file" id="file-select" onchange="pdf.submit()" name="file" style="display: none;" />'+
+                '</div>'+
+                '<div id="roomFiles">'+
+                    '<span>Archivos de la sala <i id="load_list" class="fa fa-refresh" v-on:click="list"></i></span>'+
+                    '<div class="lista">'+
+                        '<template v-for="file in filesRoom">'+
+                            '<div>'+
+                                '<i onclick="window.open(\'{{ file.link }}\', \'_blank\', \'width=800,height=600\')">{{ decodeURIComponent(file.name) }}</i>'+
+                                '<!--<a class="fa fa-external-link" onclick="window.open(\'{{ file.link }}\', \'_blank\', \'width=600,height=400\')"></a>-->'+
+                            '</div>'+
+                        '</template>'+
+                        '<template v-for="file in filesMine">'+
+                            '<div>'+
+                                '<i onclick="window.open(\'{{ file.path }}\', \'_blank\', \'width=800,height=600\')">{{ decodeURIComponent(file.name) }}</i>'+
+                                '<a class="fa fa-trash-o" onclick="pdf.delete(\'{{ file.name }}\', \'{{ file.password }}\')"></a>'+
+                                '<!--<a class="fa fa-external-link" onclick="window.open(\'{{ file.path + \'/\' + file.password }}\', \'_blank\', \'width=600,height=400\')"></a>-->'+
+                            '</div>'+
+                        '</template>'+
+                    '</div>'+
+                '</div>'+
+            '</div>'+
+    '</div>';
+        
+    
+    document.querySelector('#pdf').innerHTML = pdfTemplate;
+    
+    
     var pdf = new Vue({
         el: '#pdf-controls',
         data: {
             room: '',
-            noRoom: true,
-            iframe: '',
             filesRoom: [
                 
             ],
@@ -119,12 +224,6 @@
             ]
         },
         methods: {
-            registerRoom: function() {
-                console.log('1');
-                if(this.room != ''){
-                    this.noRoom = false;
-                }
-            },
             submit: function(){
                 var self = this;
                 var files = document.getElementById('file-select').files;
@@ -133,7 +232,7 @@
                 Vue.http.post('/pdf/' + this.room, formData).then(function(res){
                     self.filesMine.push({
                         name: res.data.path.split('/')[2],
-                        path: '/pdf/view/' + res.data.path.split('pdf/')[1],
+                        path: res.data.path,
                         password: res.data.password
                     });
                 }, function(err){
@@ -160,7 +259,19 @@
                 }catch(e){}
                 //TODO link to visor pdf files only
                 Vue.http.get('/pdf/list/' + this.room).then(function(res){
-                    self.filesRoom = res.data.files;
+                    self.filesRoom = [];
+                    if(typeof res.data.files != 'undefined')
+                    res.data.files.forEach(function(file){
+                        var exists = false;
+                        self.filesMine.forEach(function(f){
+                            if(decodeURIComponent(file.name) == decodeURIComponent(f.name)){
+                                exists = true;
+                            }
+                        });
+                        if(!exists){
+                            self.filesRoom.push(file);
+                        }
+                    });
                     try{
                         spin1.classList.remove('fa-spin');
                     }catch(e){}
@@ -180,7 +291,7 @@
                 ifr.setAttribute('name', 'myFrame');
                 var trick = document.createElement('hack');
                 trick.appendChild(ifr);
-                this.iframe = trick.innerHTML;
+                document.querySelector('frameId') = trick.innerHTML;
             },
             listVdrive: function(){
                 var self = this;
@@ -205,8 +316,91 @@
     
     setInterval(function(){
         pdf.list();
-    }, 5000);
+    }, 2500);
+    
+    
+    
+    document.querySelector('#toggler').addEventListener('click', function(){
+        document.querySelector('.off-canvas').classList.toggle('move');
+    });
+    
+    
+      var template = '<div id="chat">'+
+        '<div id="area">'+
+            '<template v-for="message in messages">'+
+                '<div v-if="message.me" class="msg-block yo">'+
+                    '<span class="user">'+
+                        '{{{ message.user }}}'+
+                    '</span>'+
+                    '<span class="message">'+
+                        '{{ message.text }}'+
+                    '</span>'+
+                '</div>'+
+                '<div v-else class="msg-block">'+
+                    '<span class="user">'+
+                        '{{{ message.user }}}'+
+                    '</span>'+
+                    '<span class="message">'+
+                        '{{ message.text }}'+
+                    '</span>'+
+                '</div>'+
+            '</template>'+
+        '</div>'+
+        '<input v-model="newMsg" v-on:keyup.enter="myMsg">'+
+        '<!--<button unselectable="on" v-on:click="myMsg">></button>-->'+
+    '</div>';
+
+    document.querySelector('#chat').innerHTML = template;
+
+    var chat = new Vue({
+        el: '#chat',
+        data: {
+            newMsg: '',
+            sala: prompt('sala'),
+            nick: '<img src="' + prompt('nick') + '" width="25" height="25">',
+            messages: [
+
+            ]
+        },
+        methods: {
+            addMsg: function(msg, user, me) {
+                this.messages.push({ text: msg, user: user, me: (me)?me:false });
+                if(me){
+                    this.sendMsg(msg);
+                }
+                setTimeout(function(){document.querySelector('#chat #area').scrollTop = document.querySelector('#chat #area').scrollHeight}, 200);
+            },
+            sendMsg: function(msg) {
+                chatSend(msg);
+            },
+            myMsg: function() {
+                var msg = this.newMsg.trim();
+                if (msg) {
+                    this.addMsg(msg, this.nick, true);
+                }
+                this.newMsg = '';
+            }
+        }
+    });
+
+    var socket = io();
+
+
+    var loggg = setInterval(function(){
+        if(chat.nick && chat.sala){
+            socket.emit('chat:login', { nick: chat.nick, room: chat.sala });
+            pdf.room = chat.sala;
+            clearInterval(loggg);
+        }
+    }, 3000);
+
+    function chatSend(msg){
+        socket.emit('chat:msg', { msg: msg });
+    }
+
+    socket.on('chat:msg', function(data){
+        chat.addMsg(data.msg, data.nick, false);
+    });
 
 </script>
-
 </html>

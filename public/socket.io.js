@@ -7251,29 +7251,3 @@ function toArray(list, index) {
 },{}]},{},[31])(31)
 });
 
-
-
-
-var socket2 = io();
-
-socket2.on('connect', function(){
-    socket.emit('pdf:listen', { pdf: url.split('/')[1] });
-});
-
-socket2.on('pdf:page', function(data){
-    queueRenderPage(data.page);
-});
-
-socket2.on('pdf:scroll', function(data){
-    document.querySelector('.scroll').scrollTop = data.percentaje;
-});
-
-//TODO
-/*
-
-(function(){
-    //test with anon to evade collisions
-})();
-
-
-*/

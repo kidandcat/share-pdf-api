@@ -118,7 +118,6 @@ router.get('/pdf/list/:path', function(req, res, next) {
 });
 
 router.get('/pdf/:path/:id', function(req, res, next) {
-    res.contentType("application/pdf");
     fs.createReadStream('pdfs/' + req.params.path + '/' + encodeURIComponent(req.params.id)).pipe(res);
 });
 
@@ -258,6 +257,19 @@ io.on('connection', function(socket) {
             }, 3000);
         }
     });
+    
+    socket.on('chat:login', function(data){
+        console.log(data);
+        socket.nick = data.nick;
+        socket.join(data.room);
+        socket.room = data.room;
+    })
+    
+    socket.on('chat:msg', function(data){
+        console.log(data);
+        data.nick = socket.nick;
+        socket.broadcast.to(socket.room).emit('chat:msg', data);
+    })
 });
 
 

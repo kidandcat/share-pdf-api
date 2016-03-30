@@ -1,0 +1,24 @@
+<div id="chat">
+    <div id="area">
+        <template v-for="message in messages">
+            <div v-if="message.me" class="msg-block yo">
+                <span class="user">
+                        {{ message.user }}
+                    </span>
+                <span class="message">
+                        {{ message.text }}
+                    </span>
+            </div>
+            <div v-else class="msg-block">
+                <span class="user">
+                        {{ message.user }}
+                    </span>
+                <span class="message">
+                        {{ message.text }}
+                    </span>
+            </div>
+        </template>
+    </div>
+    <input v-model="newMsg" v-on:keyup.enter="myMsg">
+    <!--<button unselectable="on" v-on:click="myMsg">></button>-->
+</div>
