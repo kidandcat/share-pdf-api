@@ -120,7 +120,7 @@
         }
         
         #chat .message {
-            max-width: 80%;
+            max-width: 70%;
             padding: 10px;
             border: 1px solid deepskyblue;
             border-radius: 5px;
@@ -128,6 +128,8 @@
             margin: 5px;
             flex: none;
             color: white;
+            text-align: justify;
+            text-justify: inter-word;
         }
         
         .off-canvas {
