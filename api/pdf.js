@@ -180,9 +180,9 @@ function deleteOldPdf(now) {
                         if (err) {
                             console.log(err);
                         }
-                        now = new Date().getTime();
+                        now1 = new Date().getTime();
                         endTime = new Date(stat.ctime).getTime() + 7200000;
-                        if (now > endTime || now) {
+                        if (now1 > endTime || now) {
                             deleteFile('pdfs/' + folder + '/' + filename);
                         }
                     });
