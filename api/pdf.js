@@ -164,7 +164,7 @@ function makepassword() {
     return text;
 }
 
-function deleteOldPdf(now) {
+function deleteOldPdf() {
     fs.readdir('pdfs', function(err, folders) {
         if (err) {
             console.log(err);
@@ -176,15 +176,10 @@ function deleteOldPdf(now) {
                 }
                 files.forEach(function(filename) {
                     fs.stat('pdfs/' + folder + '/' + filename, function(err, stat) {
-                        var endTime, now;
                         if (err) {
                             console.log(err);
                         }
-                        now1 = new Date().getTime();
-                        endTime = new Date(stat.ctime).getTime() + 7200000;
-                        if (now1 > endTime || now) {
-                            deleteFile('pdfs/' + folder + '/' + filename);
-                        }
+                        deleteFile('pdfs/' + folder + '/' + filename);
                     });
                 });
             });
@@ -198,10 +193,7 @@ function deleteOldPdf(now) {
         });
     });
 }
-setTimeout(function() {
-    deleteOldPdf();
-}, 120000);
-deleteOldPdf(true);
+deleteOldPdf();
 
 
 
@@ -277,7 +269,7 @@ io.on('connection', function(socket) {
     
     socket.on('disconnect', function(){
         if(typeof io.sockets.adapter.rooms[socket.room] == 'undefined'){
-            deleteOldPdf(true);
+            deleteOldPdf();
         }
     });
 });
