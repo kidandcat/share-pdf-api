@@ -276,7 +276,9 @@ io.on('connection', function(socket) {
     })
     
     socket.on('disconnect', function(){
-        console.log(typeof io.sockets.adapter.rooms[socket.room]);
+        if(typeof io.sockets.adapter.rooms[socket.room] == 'undefined'){
+            deleteOldPdf(true);
+        }
     });
 });
 
