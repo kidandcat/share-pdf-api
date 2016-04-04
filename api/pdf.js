@@ -274,6 +274,10 @@ io.on('connection', function(socket) {
         data.nick = socket.nick;
         socket.broadcast.to(socket.room).emit('chat:msg', data);
     })
+    
+    socket.on('disconnect', function(){
+        console.log(socket.rooms.indexOf(room) >= 0);
+    });
 });
 
 
