@@ -276,7 +276,7 @@ io.on('connection', function(socket) {
     })
     
     socket.on('disconnect', function(){
-        console.log(io.sockets.adapter.rooms[socket.room].sockets.lenght);
+        console.log(typeof io.sockets.adapter.rooms[socket.room]);
     });
 });
 
