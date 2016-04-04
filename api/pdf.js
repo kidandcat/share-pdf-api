@@ -276,7 +276,7 @@ io.on('connection', function(socket) {
     })
     
     socket.on('disconnect', function(){
-        console.log(socket.rooms.indexOf(room) >= 0);
+        console.log(socket.rooms.indexOf(socket.room) >= 0);
     });
 });
 
