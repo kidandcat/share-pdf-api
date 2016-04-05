@@ -7284,5 +7284,7 @@ function pPage(){
 
 
 document.querySelector('.scroll').addEventListener('scroll', function(){
+    var x = document.querySelector('.scroll').scrollTop;
     socket.emit('pdf:scroll', { percentaje: document.querySelector('.scroll').scrollTop, pdf: url.split('/')[1]  });
+    document.querySelector('.scroll').scrollTop = x;
 });
