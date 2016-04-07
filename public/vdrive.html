@@ -5,90 +5,229 @@
     <script src="../../../vue.js"></script>
     <script src="../../../vue-resource.min.js"></script>
     <style>
-        #block {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 250px;
-            height: 250px;
-            transform: translate(-50%, -60%);
-            background-color: #D9D8DA;
-            border-radius: 10px;
-            color: #747576;
-            font-size: 20px;
-            padding: 10px;
+        html {
+            background-color: #1696db;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            height: 100%; 
+            overflow: hidden;
         }
         
-        #block2 {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            height: 400px;
-            transform: translate(-50%, -50%);
-            background-color: #D9D8DA;
-            border-radius: 10px;
-            color: #747576;
-            font-size: 20px;
-            width: 400px;
-            overflow: auto;
+        body {
+            height: auto;
+            margin: 0;
+            top: 0;
         }
         
-        a {
+        .center {
+            position: relative;
+            margin-left: 50%;
+            transform: translate(-50%, 0);
+        }
+        
+        .logo {
+            margin-top: 140px;
+        }
+        
+        #form {
+            width: 345px;
             display: block;
-            margin: 20px;
+            flex: 0.5;
         }
         
-        span {
-            display: block;
+        #form input {
+            padding: 5px;
+            height: 30px;
+            width: 290px;
+            border-radius: 0;
+            border: none;
+            font-size: 20px;
             margin: 5px;
-            margin-left: 20px;
+            background: #fff;
+            color: #555;
+            cursor: text;
+            font-family: inherit;
+            outline: none;
+            line-height: inherit;
         }
         
-        input {
+        .cloud {
+            width: 335px;
+            display: block;
+            flex: 0.5;
+        }
+        
+        .entrar {
+            width: 300px;
+            margin: 0;
             border: none;
             outline: none;
-            border-radius: 3px;
-            width: 200px;
-            height: 24px;
-            margin-bottom: 10px;
-            margin-left: 20px;
+            height: 30px;
+            color: #1696db;
+            padding: 0;
         }
         
-        button {
-            display: block;
-            width: 200px;
-            margin: 20px;
-            background: none;
-            background-color: #0089f2;
+        .forgot-password {
             color: white;
-            border: none;
-            border-radius: 5px;
-            height: 40px;
-            margin-left: 20px;
+            font-size: 15px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+        
+        .cloud img {
+            height: 157px;
+            margin-left: 25px;
+        }
+        
+        .recordar {
+            margin-top: 20px;
+            display: flex;
+            width: 90px;
+        }
+        
+        #form .recordar span {
+            display: block;
+            flex: 1;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            height: 13px;
+            line-height: 13px;
+        }
+        
+        #form .recordar input {
+            height: 13px;
+            flex: 1;
+            display: block;
+            margin: 0;
+        }
+        
+        .title {
+            margin-top: 22px;
+            color: #ffffff;
+            width: 15em;
+            line-height: 1.42857143;
+            text-align: center;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 42px;
+            font-weight: normal;
+            margin-bottom: 20px;
+        }
+        
+        .title-small {
+            display: none;
+            margin-top: 25px;
+            color: #ffffff;
+            width: 15em;
+            line-height: 1.42857143;
+            text-align: center;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 20px;
+            font-weight: normal;
+            margin-bottom: 25px;
+        }
+        
+        .main {
+            display: flex;
+            width: 616px;
+            flex-wrap: wrap;
+        }
+        
+        footer {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translate(-50%,0);
+        }
+        
+        .loader {
+            z-index: 200;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+        }
+        
+        .hide {
+            display: none;
+        }
+        
+        .black {
+            z-index: 150;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-color: black;
+            transition: opacity 20s ease-in-out;
+            opacity: 0.5;
+        }
+        
+        footer span {
+            display: block;
+            color: #ccc;
+            opacity: 0.6;
+            font-size: 14px;
+            margin-bottom: 30px;
+            width: 360px;
+        }
+        
+        @media (max-width: 550px) {
+            .main{
+                width: 300px;
+            }
+            .cloud img {
+                margin-left: 0;
+                margin-top: 20px;
+            }
+            .title-small {
+                display: block;
+            }
+            .title {
+                display: none;
+            }
+        }
+        @media (max-height: 800px) {
+            footer {
+                top: 740px;
+            }
         }
     </style>
 </head>
 
 <body>
-    <div id="form">
-        <template v-if="list">
-            <div id="block2">
-                <a href="#" v-for="file in list" onclick="form.import('{{ file.link }}')">{{ file.name }}</a>
-            </div>
-        </template>
-        <template v-else>
-            <div id="block">
-                <span>User</span>
-                <input type="text" v-model="user" autofocus>
-                <span>Password</span>
-                <input type="password" v-model="password" v-on:keyup.enter="getList">
-                <button v-on:click="getList">Login</button>
-            </div>
-        </template>
-
+    <div id="loader" class="hide"></div>
+    <div id="spinner" class="hide"><img src="//static.netelip.com/panel/v4/img/loading-page-alt2.svg" alt=""></div>
+    <div class="logo center">
+        <img src="logo.svg" class="center" alt="">
     </div>
-</body>
-<script>
+    <div class="title center">
+        Inicia sesión para acceder a vDrive
+    </div>
+    <div class="title-small center">
+        Inicia sesión
+    </div>
+    <div class="main center">
+        <div id="form">
+            <input type="text" placeholder="Nombre de usuario" v-model="user" autofocus>
+            <input type="password" placeholder="Contraseña" v-model="password" v-on:keyup.enter="getList">
+            <div class="forgot-password">¿Has olvidado tu contraseña?</div>
+            <button class="entrar" v-on:click="getList">Entrar</button>
+            <div class="recordar">
+                <input type="checkbox">
+                <span>recordar</span>
+            </div>
+        </div>
+        <div class="cloud">
+            <img src="cloud.png" alt="">
+        </div>
+    </div>
+    <footer>
+        <span><strong>vDrive</strong> - Almacenamiento en la nube de <strong>netelip</strong></span>
+    </footer>
+    <!--<a href="#" v-for="file in list" onclick="form.import('{{ file.link }}')">{{ file.name }}</a>-->
+    <script>
     var form = new Vue({
         el: '#form',
         data: {
@@ -98,11 +237,13 @@
         },
         methods: {
             getList: function(){
+                this.load();
                 var self = this;
                  if(this.user != '' && this.password != ''){
                      Vue.http.get('/pdf/vdrive/list/' + this.user + '/' + this.password).then(function(res){
                          res.data.shift();
                          self.list = res.data;
+                         console.log(res.data);
                      }, function(err){
                          console.log(err);
                      });
@@ -116,10 +257,19 @@
                 }, function(err){
                     console.log(err);
                 });
+            },
+            load: function(){
+                var load = document.getElementById('loader');
+                var spin = document.getElementById('spinner');
+                load.classList.remove('hide');
+                spin.classList.remove('hide');
+                spin.classList.add('loader');
+                load.classList.add('black');
             }
         }
     });
 
 </script>
+</body>
 
 </html>
