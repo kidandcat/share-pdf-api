@@ -16,8 +16,9 @@ var passwords = [];
 
 
 
-router.get('/pdf/vdrive/list/', function(req, res, next) {
-    res.sendFile(path.join(process.cwd(), 'public', 'vdrive.html'));
+router.get('/pdf/vdrive/:user/:pass', function(req, res, next) {
+    //res.sendFile(path.join(process.cwd(), 'public', 'vdrive.html'));
+    res.render('vdrive.jade', { user: req.params.user, pass: req.params.pass });
 });
 
 router.get('/pdf/vdrive/list/:user/:pass', function(req, res, next) {
