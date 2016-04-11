@@ -10,6 +10,7 @@ var request = require('request');
 var crypto = require('crypto');
 var app = require('../app.js');
 var io = require('socket.io')(app);
+var atob = require('atob');
 
 var pdfRooms = [];
 var passwords = [];
