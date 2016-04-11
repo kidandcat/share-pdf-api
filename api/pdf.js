@@ -251,9 +251,9 @@ function deleteOldPdf() {
 deleteOldPdf();
 
 
+var open = [];
 
 io.on('connection', function(socket) {
-
     socket.on('pdf:new', function(data) {
         if (pdfRooms[data.pdf]) {
             pdfRooms[data.pdf]['master'] = socket;
@@ -265,6 +265,7 @@ io.on('connection', function(socket) {
     });
 
     socket.on('pdf:open', function(data) {
+        open[socket.room] = data;
         socket.broadcast.to(socket.room).emit('pdf:open', data);
     });
 
@@ -314,6 +315,9 @@ io.on('connection', function(socket) {
         socket.nick = data.nick;
         socket.join(data.room);
         socket.room = data.room;
+        if(open[socket.room] != false){
+            socket.emit('pdf:open', data);
+        }
     })
 
     socket.on('chat:msg', function(data) {
