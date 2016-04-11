@@ -82,7 +82,6 @@ router.get('/pdf/vdrive/stat/:user/:pass/:path', function(req, res, next) {
 });
 
 router.get('/pdf/import/:path/:url/:user/:pass', function(req, res, next) {
-    console.log('sala1');
     var url = req.params.url;
     var user = req.params.user;
     var pass = req.params.pass;
