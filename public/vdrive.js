@@ -21,7 +21,7 @@ var form = new Vue({
                     folder = x[x.length-1];
                     back = true;
                 }
-                Vue.http.get('/pdf/vdrive/list/' + 
+                Vue.http.get('/pdf/vdrive/list/files/' + 
                 this.user + '/' + 
                 this.password + '/' + 
                 (this.actualFolder != '' && !back?this.actualFolder + '*':'') + 

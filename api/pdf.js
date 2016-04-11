@@ -22,9 +22,9 @@ router.get('/pdf/vdrive/:user/:pass/:room', function(req, res, next) {
     res.render('vdrive.jade', { user: req.params.user, pass: atob(req.params.pass), roomid: req.params.room });
 });
 
-router.get('/pdf/vdrive/list/:user/:pass', pdf_vdrive_list_user_pass__dir);
+router.get('/pdf/vdrive/list/files/:user/:pass', pdf_vdrive_list_user_pass__dir);
 
-router.get('/pdf/vdrive/list/:user/:pass/:dir', pdf_vdrive_list_user_pass__dir);
+router.get('/pdf/vdrive/list/files/:user/:pass/:dir', pdf_vdrive_list_user_pass__dir);
 
 //folder1*folder2*filename
 function pdf_vdrive_list_user_pass__dir(req, res, next) {
