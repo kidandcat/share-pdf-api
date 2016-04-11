@@ -21,17 +21,28 @@ router.get('/pdf/vdrive/:user/:pass', function(req, res, next) {
     res.render('vdrive.jade', { user: req.params.user, pass: req.params.pass });
 });
 
-router.get('/pdf/vdrive/list/:user/:pass', function(req, res, next) {
+router.get('/pdf/vdrive/list/:user/:pass', pdf_vdrive_list_user_pass__dir);
+
+router.get('/pdf/vdrive/list/:user/:pass/:dir', pdf_vdrive_list_user_pass__dir);
+
+//folder1*folder2*filename
+function pdf_vdrive_list_user_pass__dir(req, res, next) {
     var wfs = require("webdav-fs")(
         'https://vdrive.netelip.com/remote.php/webdav/',
         req.params.user,
         req.params.pass
     );
 
-    wfs.readdir("/", function(err, contents) {
+
+    if (req.params.dir) {
+        req.params.dir = req.params.dir.split('*').join('/');
+    }
+
+
+    wfs.readdir('/' + (req.params.dir || ''), function(err, contents) {
         if (!err) {
             var items = [];
-            contents.forEach(function(f){
+            contents.forEach(function(f) {
                 var obj = {};
                 obj.name = f;
                 obj.link = '/pdf/import/:path/' + encodeURIComponent('https://vdrive.netelip.com/remote.php/webdav/' + f) + '/' + req.params.user + '/' + req.params.pass;
@@ -40,6 +51,31 @@ router.get('/pdf/vdrive/list/:user/:pass', function(req, res, next) {
             res.send(items);
         } else {
             res.send(err.message);
+        }
+    });
+}
+
+//folder1*folder2*filename
+router.get('/pdf/vdrive/stat/:user/:pass/:path', function(req, res, next) {
+    var wfs = require("webdav-fs")(
+        'https://vdrive.netelip.com/remote.php/webdav/',
+        req.params.user,
+        req.params.pass
+    );
+    req.params.path = req.params.path.split('*');
+    req.params.path.forEach(function(el) {
+        req.params.path[req.params.path.indexOf(el)] = encodeURIComponent(el);
+    });
+    req.params.path = req.params.path.join('/');
+    wfs.stat('/' + req.params.path, function(error, fileStat) {
+        if (!error) {
+            res.send({
+                isFile: fileStat.isFile(),
+                isDir: fileStat.isDirectory(),
+                time: fileStat.mtime
+            });
+        } else {
+            console.log(error);
         }
     });
 });
@@ -56,9 +92,9 @@ router.get('/pdf/import/:path/:url/:user/:pass', function(req, res, next) {
     if (!fs.existsSync('pdfs/' + req.params.path)) {
         fs.mkdirSync('pdfs/' + req.params.path);
     }
-        request.get(url).auth(user, pass, false).pipe(fs.createWriteStream('pdfs/' + req.params.path + '/' + encodeURIComponent(filename)));
-        passwords[req.params.path + encodeURIComponent(filename)] = password;
-        res.send({ status: 'ok', path: 'pdf/' + req.params.path + '/' + encodeURIComponent(filename), password: password });
+    request.get(url).auth(user, pass, false).pipe(fs.createWriteStream('pdfs/' + req.params.path + '/' + encodeURIComponent(filename)));
+    passwords[req.params.path + encodeURIComponent(filename)] = password;
+    res.send({ status: 'ok', path: 'pdf/' + req.params.path + '/' + encodeURIComponent(filename), password: password });
 });
 
 router.get('/pdf/import/:path/:url/', function(req, res, next) {
@@ -199,7 +235,7 @@ deleteOldPdf();
 
 
 io.on('connection', function(socket) {
-    
+
     socket.on('pdf:new', function(data) {
         if (pdfRooms[data.pdf]) {
             pdfRooms[data.pdf]['master'] = socket;
@@ -209,7 +245,7 @@ io.on('connection', function(socket) {
             pdfRooms[data.pdf]['master'] = socket;
         }
     });
-    
+
     socket.on('pdf:open', function(data) {
         socket.broadcast.to(socket.room).emit('pdf:open', data);
     });
@@ -226,7 +262,7 @@ io.on('connection', function(socket) {
             });
         }
     });
-    
+
     socket.on('pdf:scroll', function(data) {
         if (socket == pdfRooms[data.pdf]['master']) {
             pdfRooms[data.pdf].forEach(function(s) {
@@ -254,22 +290,22 @@ io.on('connection', function(socket) {
             }, 3000);
         }
     });
-    
-    socket.on('chat:login', function(data){
+
+    socket.on('chat:login', function(data) {
         console.log(data);
         socket.nick = data.nick;
         socket.join(data.room);
         socket.room = data.room;
     })
-    
-    socket.on('chat:msg', function(data){
+
+    socket.on('chat:msg', function(data) {
         console.log(data);
         data.nick = socket.nick;
         socket.broadcast.to(socket.room).emit('chat:msg', data);
     })
-    
-    socket.on('disconnect', function(){
-        if(typeof io.sockets.adapter.rooms[socket.room] == 'undefined'){
+
+    socket.on('disconnect', function() {
+        if (typeof io.sockets.adapter.rooms[socket.room] == 'undefined') {
             deleteOldPdf();
         }
     });
