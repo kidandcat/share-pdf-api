@@ -11,6 +11,7 @@ var form = new Vue({
         getList: function(folder) {
             this.load(true);
             var self = this;
+            var back = false;
             // /pdf/vdrive/list/username/password/folder1:folder2||nothing for root
             if (this.user != '' && this.password != '') {
                 if(folder == '..'){
@@ -18,13 +19,14 @@ var form = new Vue({
                     x.pop()
                     self.actualFolder = x.join('*');
                     folder = x[x.length-1];
+                    back = true;
                 }
                 Vue.http.get('/pdf/vdrive/list/' + 
                 this.user + '/' + 
                 this.password + '/' + 
                 (this.actualFolder != ''?this.actualFolder + '*':'') + 
                 (folder || '')).then(function(res) {
-                    self.actualFolder += (folder)?'*' + folder:'';
+                    self.actualFolder += (folder && !back)?'*' + folder:'';
                     self.list = res.data;
                     self.load(false);
                     self.defList = [];
