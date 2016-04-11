@@ -315,7 +315,7 @@ io.on('connection', function(socket) {
         socket.nick = data.nick;
         socket.join(data.room);
         socket.room = data.room;
-        if(open[socket.room] != false){
+        if(typeof open[socket.room] != 'undefined' && open[socket.room] != false){
             socket.emit('pdf:open', data);
         }
     })
