@@ -32,6 +32,11 @@
             transform: translate(-50%,-50%);
         }
         
+        #list img {
+            float: left;
+            margin-right: 20px;
+        }
+        
         li {
             width: 100%;
             border-bottom: 1px solid lightgray;
