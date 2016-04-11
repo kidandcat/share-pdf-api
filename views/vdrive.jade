@@ -5,6 +5,7 @@ html
     script(src="../../../vue-resource.min.js")
     link(href='/css/vdrive.css', rel='stylesheet')
   body
+    #room.hide(value="#{ roomid }")
     #form
       #list
         template(v-for="item in defList")

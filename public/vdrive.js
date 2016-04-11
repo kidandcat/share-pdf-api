@@ -60,7 +60,7 @@ var form = new Vue({
             });
         },
         import: function(link) {
-            var ln = link.split(':path').join(window.room);
+            var ln = link.split(':path').join(document.querySelector('#room').value);
             Vue.http.get(ln).then(function(res) {
                 window.opener.postMessage(JSON.stringify(res), '*');
                 window.close();
