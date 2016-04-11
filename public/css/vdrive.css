@@ -32,6 +32,18 @@
             transform: translate(-50%,-50%);
         }
         
+        li {
+            width: 100%;
+            border-bottom: 1px solid lightgray;
+            padding: 10px;
+            cursor: pointer;
+        }
+        
+        li:hover {
+            box-sizing: border-box;
+            border: 1px solid deepskyblue;
+        }
+        
         .hide {
             display: none;
         }
