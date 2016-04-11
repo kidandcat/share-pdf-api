@@ -34,10 +34,12 @@
         
         #list img {
             float: left;
-            margin-right: 20px;
+            margin-right: 10px;
+            margin-left: 10px;
         }
         
         li {
+            display: block;
             width: 100%;
             border-bottom: 1px solid lightgray;
             padding: 10px;
