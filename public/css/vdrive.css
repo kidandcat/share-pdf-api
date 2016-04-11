@@ -35,6 +35,11 @@
             transform: translate(-50%,-50%);
         }
         
+        #list {
+            overflow-y: scroll;
+            overflow-x: hidden; 
+        }
+        
         #list img {
             margin-top: 9px;
             float: left;
