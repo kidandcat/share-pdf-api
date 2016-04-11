@@ -91,10 +91,13 @@ function nextPage() {
 /**
 * Asynchronously downloads PDF.
 */
-PDFJS.getDocument(url).then(function(pdfDoc_) {
-    pdfDoc = pdfDoc_;
-    //document.getElementById('page_count').textContent = pdfDoc.numPages;
+var loadI = setTimeout(function(){
+    PDFJS.getDocument(url).then(function(pdfDoc_) {
+        clearInterval(loadI);
+        pdfDoc = pdfDoc_;
+        //document.getElementById('page_count').textContent = pdfDoc.numPages;
 
-    // Initial/first page rendering
-    renderPage(pageNum);
-});
+        // Initial/first page rendering
+        renderPage(pageNum);
+    });
+}, 1000)

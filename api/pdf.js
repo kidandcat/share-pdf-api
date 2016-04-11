@@ -92,6 +92,7 @@ router.get('/pdf/import/:path/:url/:user/:pass', function(req, res, next) {
     if (!fs.existsSync('pdfs/' + req.params.path)) {
         fs.mkdirSync('pdfs/' + req.params.path);
     }
+    
     request.get(url).auth(user, pass, false).pipe(fs.createWriteStream('pdfs/' + req.params.path + '/' + encodeURIComponent(filename)));
     passwords[req.params.path + encodeURIComponent(filename)] = password;
     res.send({ status: 'ok', path: 'pdf/' + req.params.path + '/' + encodeURIComponent(filename), password: password });
@@ -118,11 +119,22 @@ router.get('/pdf/import/:path/:url/', function(req, res, next) {
 
 router.post('/pdf/:path', multipartMiddleware, function(req, res, next) {
     fs.readFile(req.files.file.path, function(err, data) {
+        if(err){
+            console.log(err);
+        }
+        
         var password = makepassword();
         if (!fs.existsSync('pdfs/' + req.params.path)) {
             fs.mkdirSync('pdfs/' + req.params.path);
+            console.log('FSYNC CREATE DIR');
         }
+        console.log('STEP1');
         fs.writeFile('pdfs/' + req.params.path + '/' + encodeURIComponent(req.files.file.name), data, function(err) {
+            console.log('STEP2');
+            if(err){
+                console.log('ERRRRRRRRORRRRRR');
+                console.log(err);
+            }
             passwords[req.params.path + encodeURIComponent(req.files.file.name)] = password;
             res.send({ status: 'ok', path: 'pdf/' + req.params.path + '/' + encodeURIComponent(req.files.file.name), password: password });
         });
@@ -155,7 +167,13 @@ router.get('/pdf/list/:path', function(req, res, next) {
 });
 
 router.get('/pdf/:path/:id', function(req, res, next) {
-    fs.createReadStream('pdfs/' + req.params.path + '/' + encodeURIComponent(req.params.id)).pipe(res);
+    if (fs.existsSync('pdfs/' + req.params.path + '/' + encodeURIComponent(req.params.id))) {
+        fs.createReadStream('pdfs/' + req.params.path + '/' + encodeURIComponent(req.params.id)).pipe(res);
+    }else{
+        console.log('NOT FOUND');
+        console.log('pdfs/' + req.params.path + '/' + encodeURIComponent(req.params.id));
+        res.send('not found');
+    }
 });
 
 router.get('/pdf/view/:path/:id/', function(req, res, next) {
@@ -305,7 +323,8 @@ io.on('connection', function(socket) {
     })
 
     socket.on('disconnect', function() {
-        if (typeof io.sockets.adapter.rooms[socket.room] == 'undefined') {
+        console.log('DISCONNECT');
+        if (typeof socket.room != 'undefined' && typeof io.sockets.adapter.rooms[socket.room] == 'undefined') {
             deleteOldPdf();
         }
     });
