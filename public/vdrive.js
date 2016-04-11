@@ -28,6 +28,10 @@ var form = new Vue({
                     self.list = res.data;
                     self.load(false);
                     self.defList = [];
+                    self.defList.push({
+                        name: '..',
+                        isDir: true
+                    });
                     self.list.forEach(function(f){
                         self.stat((self.actualFolder != ''?self.actualFolder + '*':'') + f.name, f);
                     });
