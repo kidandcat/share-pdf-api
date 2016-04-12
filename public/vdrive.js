@@ -30,10 +30,12 @@ var form = new Vue({
                     self.list = res.data;
                     self.load(false);
                     self.defList = [];
-                    self.defList.push({
-                        name: '..',
-                        isDir: true
-                    });
+                    if(self.actualFolder != ''){
+                        self.defList.push({
+                            name: self.actualFolder.split('*').join('/'),
+                            isDir: true
+                        });
+                    }
                     self.list.forEach(function(f){
                         self.stat((self.actualFolder != ''?self.actualFolder + '*':'') + f.name, f);
                     });
