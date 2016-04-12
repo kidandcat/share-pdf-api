@@ -14,7 +14,7 @@ var form = new Vue({
             var back = false;
             // /pdf/vdrive/list/username/password/folder1:folder2||nothing for root
             if (this.user != '' && this.password != '') {
-                if(folder == '..'){
+                if(folder == self.list[0].name){
                     var x = self.actualFolder.split('*');
                     x.pop()
                     self.actualFolder = x.join('*');
@@ -32,7 +32,7 @@ var form = new Vue({
                     self.defList = [];
                     if(self.actualFolder != ''){
                         self.defList.push({
-                            name: self.actualFolder.split('*').join('/'),
+                            name: 'Inicio' + self.actualFolder.split('*').join('/'),
                             isDir: true
                         });
                     }
