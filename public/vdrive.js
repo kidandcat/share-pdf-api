@@ -33,7 +33,7 @@ var form = new Vue({
                     if(self.actualFolder != ''){
                         self.defList.push({
                             name: 'Anterior',
-                            isDir: true
+                            isBack: true
                         });
                     }
                     self.list.forEach(function(f){
