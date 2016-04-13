@@ -29,7 +29,7 @@ router.get('/pdf/vdrive/list/files/:user/:pass/:dir', pdf_vdrive_list_user_pass_
 //folder1*folder2*filename
 function pdf_vdrive_list_user_pass__dir(req, res, next) {
     var wfs = require("webdav-fs")(
-        'https://vdriveprivate.vdrive/remote.php/webdav/',
+        'http://vdriveprivate.vdrive/remote.php/webdav/',
         req.params.user,
         req.params.pass
     );
@@ -59,7 +59,7 @@ function pdf_vdrive_list_user_pass__dir(req, res, next) {
 //folder1*folder2*filename
 router.get('/pdf/vdrive/stat/:user/:pass/:path', function(req, res, next) {
     var wfs = require("webdav-fs")(
-        'https://vdriveprivate.vdrive/remote.php/webdav/',
+        'http://vdriveprivate.vdrive/remote.php/webdav/',
         req.params.user,
         req.params.pass
     );
