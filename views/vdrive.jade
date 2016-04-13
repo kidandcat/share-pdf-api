@@ -9,6 +9,8 @@ html
     #form
       #list
         template(v-for="item in defList")
+          img(v-if="item.isBack" src="//static.netelip.com/webrtc/svg/back.png")
+          li(v-if="item.isBack" onclick="form.getList('{{item.name}}')") {{ item.name }}
           img(v-if="item.isFile" src="//static.netelip.com/webrtc/svg/file.svg")
           li(v-if="item.isFile" onclick="form.import('{{item.link}}')") {{ item.name }}
           img(v-if="item.isDir" src="//static.netelip.com/webrtc/svg/folder.svg")
